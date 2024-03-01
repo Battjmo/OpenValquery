@@ -1,0 +1,13 @@
+{
+  "extends": "next/core-web-vitals",
+  "root": true,
+  "rules": {
+    "react/no-unescaped-entities": "off",
+		"unused-imports/no-unused-vars": [
+			"warn",
+			{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+		]
+  },
+  "plugins": ["unused-imports"]
+}
+
