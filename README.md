@@ -48,10 +48,10 @@ It's written using GPT-3.5-Turbo for LLM support.
 
 1. Spin up the site somewhere, locally works fine.
 2. Copy `.env.template`, rename it, and fill it up with your credentials.
-3. Run intake utilities on both of those.
+3. Use the snowflake endpoints to populate the postgres database with all the relevant information about your warehouse.
 4. Use the intake endpoints to populate the pinecone database:
    - getGitHub
    - getGitLab
    - getNotion
-   - Refer to the [Postman collection](https://www.postman.com/lively-satellite-585730/workspace/openvalquery/collection/31616958-1199057e-d1c7-4c6b-8ba4-b6f0f1ad509f?action=share&creator=31616958) for the API Documentation
-5. Run the app and do some querying! I removed all of the auth from the SaaS version, but might add it back in to make it easier for people to host. As it is I would either run it locally or on an environment that's already behind auth.
+5. Refer to the [Postman collection](https://www.postman.com/lively-satellite-585730/workspace/openvalquery/collection/31616958-1199057e-d1c7-4c6b-8ba4-b6f0f1ad509f?action=share&creator=31616958) for the API Documentation
+6. Run the app and do some querying! I removed all of the auth from the SaaS version, but might add it back in to make it easier for people to host. As it is I would either run it locally or on an environment that's already behind auth.
