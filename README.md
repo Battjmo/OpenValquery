@@ -40,6 +40,8 @@ LLM:
 - OpenAI GPT-3.5-Turbo
   Moving it to [OpenRouter](https://openrouter.ai/) is high on the todo list so people can use whatever model they want easily.
 
+You'll a Postgres DB and a Redis DB as well, for table name lookups and queueing respectively.
+
 It's written using GPT-3.5-Turbo for LLM support.
 
 ### Instructions
