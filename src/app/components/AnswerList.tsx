@@ -4,9 +4,11 @@ import { AggregatedResult } from "@/lib/aggregators/aggregators";
 
 interface AnswerListProps {
   answers: AggregatedResult[] | null;
+  question: string;
 }
 const AnswerList = (props: AnswerListProps) => {
   const answers = props.answers;
+  const question = props.question;
   const [activeAnswer, setActiveAnswer] = useState("");
   const [activeDiscussion, setActiveDiscussion] = useState("");
 
@@ -47,6 +49,7 @@ const AnswerList = (props: AnswerListProps) => {
               discussionSetter={DiscussionSetter}
               activeDiscussion={activeDiscussion === id}
               id={id}
+              question={question}
             />
           </section>
         );

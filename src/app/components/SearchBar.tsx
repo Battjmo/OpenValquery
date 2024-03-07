@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, MouseEventHandler } from "react";
 import AnswerList from "./AnswerList";
 import TextInput from "./TextInput";
 import clickHandler from "@/lib/SubmitForm";
-import { Tutorial } from "./Tutorial";
 import { Tooltip } from "./Tooltip";
 import { AggregatedResult } from "@/lib/aggregators/aggregators";
 
@@ -20,7 +19,6 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [isSearchBarActive, setIsSearchBarActive] = useState(false);
-  const [isTutorialActive, setIsTutorialActive] = useState(false);
   const [explanation, setExplanation] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [question, setQuestion] = useState("");
@@ -67,12 +65,6 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
   );
   return (
     <div className="h-full w-full flex justify-center items-center flex-col text-blue ">
-      {isTutorialActive && (
-        <Tutorial
-          tutorialHandler={setIsTutorialActive}
-          tutorialActive={isTutorialActive}
-        />
-      )}{" "}
       {showSearchBar ? (
         <section className="bg-slate rounded h-60 2xl:h-80 w-full md:px-20 answer">
           <div className="bg-logo-tile bg-repeat-round box-border w-full h-full flex items-center justify-center flex-col">
@@ -85,15 +77,6 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
                 <h2 className="text-2xl pb-10 text-center md:text-left">
                   Find What You Need
                 </h2>
-                <button
-                  onClick={() => setIsTutorialActive(true)}
-                  type="button"
-                  className={`text-white border-black border-2 bg-blue rounded invisible xl:visible lg:w-3/12 h-16 md:h-12 ${
-                    isTutorialActive ? "invisible" : ""
-                  }`}
-                >
-                  New to Valquery?
-                </button>
               </div>
               <div className="w-full flex flex-col md:flex-row">
                 <TextInput
