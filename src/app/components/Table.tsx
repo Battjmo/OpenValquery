@@ -6,7 +6,6 @@ interface TableProps {
 const Table = (props: TableProps) => {
   const active = props.active;
   const content = props.content;
-  console.log("🚀 ~ Table ~ content:", content);
   const tableHeaders = Object.keys(content[0]);
   const tableData = Object.values(content);
 

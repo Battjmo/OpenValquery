@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, MouseEventHandler } from "react";
 import AnswerList from "./AnswerList";
 import TextInput from "./TextInput";
 import clickHandler from "@/lib/SubmitForm";
+import { Tutorial } from "./Tutorial";
 import { Tooltip } from "./Tooltip";
 import { AggregatedResult } from "@/lib/aggregators/aggregators";
 
@@ -19,14 +20,18 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [isSearchBarActive, setIsSearchBarActive] = useState(false);
+  const [isTutorialActive, setIsTutorialActive] = useState(false);
   const [explanation, setExplanation] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(true);
+  const [question, setQuestion] = useState("");
   useEffect(() => {
     if (finalResponse?.finalResponseText) {
       setAnswers(finalResponse?.aggregatedResults || null);
       setExplanation(finalResponse?.finalResponseText?.toString() || "");
     }
   }, [finalResponse]);
+
+  const textInputRef = useRef<HTMLInputElement>(null);
 
   const dropdown = useRef<HTMLElement>(null);
 
@@ -45,21 +50,29 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
     // clean up
     return () => window.removeEventListener("click", handleClick);
   }, [isSearchBarActive]);
-  const activeSearchbar = (e: Event) => {
-    e.stopPropagation();
+  const activeSearchbar: MouseEventHandler<HTMLLabelElement> = (event) => {
+    event.stopPropagation();
     setIsSearchBarActive(true);
   };
 
   const searchSubmitter = clickHandler(
     `api/query?topK=100&query=`,
+    textInputRef,
     "GET",
     setFinalResponse,
     setIsLoading,
     setExplanation,
-    setShowSearchBar
+    setShowSearchBar,
+    setAnswers
   );
   return (
     <div className="h-full w-full flex justify-center items-center flex-col text-blue ">
+      {isTutorialActive && (
+        <Tutorial
+          tutorialHandler={setIsTutorialActive}
+          tutorialActive={isTutorialActive}
+        />
+      )}{" "}
       {showSearchBar ? (
         <section className="bg-slate rounded h-60 2xl:h-80 w-full md:px-20 answer">
           <div className="bg-logo-tile bg-repeat-round box-border w-full h-full flex items-center justify-center flex-col">
@@ -72,13 +85,23 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
                 <h2 className="text-2xl pb-10 text-center md:text-left">
                   Find What You Need
                 </h2>
+                <button
+                  onClick={() => setIsTutorialActive(true)}
+                  type="button"
+                  className={`text-white border-black border-2 bg-blue rounded invisible xl:visible lg:w-3/12 h-16 md:h-12 ${
+                    isTutorialActive ? "invisible" : ""
+                  }`}
+                >
+                  New to Valquery?
+                </button>
               </div>
               <div className="w-full flex flex-col md:flex-row">
                 <TextInput
                   placeholder="Enter Your Query"
-                  //@ts-ignore
                   stateToggler={activeSearchbar}
                   required={true}
+                  ref={textInputRef}
+                  questionSetter={setQuestion}
                 />
                 <button
                   className="bg-blue text-white rounded border-black border-2 lg:w-2/12 mt-7 h-16 md:h-auto md:mt-0"
@@ -102,13 +125,10 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
                         key={question}
                         className="text-left"
                         onClick={() => {
-                          const searchBar = document.getElementById(
-                            "searchBar"
-                          ) as HTMLInputElement;
-                          if (searchBar) {
-                            searchBar.value = question;
-                            setIsSearchBarActive(false);
-                          }
+                          if (textInputRef.current)
+                            textInputRef.current.value = question;
+                          setQuestion(question);
+                          setIsSearchBarActive(false);
                         }}
                       >
                         {question}
@@ -161,7 +181,7 @@ const SearchBar = ({ exampleQuestions }: SearchBarProps) => {
           />
         )}
 
-        {answers && <AnswerList answers={answers} />}
+        {answers && <AnswerList answers={answers} question={question} />}
       </section>
     </div>
   );

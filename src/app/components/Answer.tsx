@@ -14,6 +14,7 @@ interface AnswerProps {
   active: boolean;
   activeDiscussion: boolean;
   discussionSetter?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  question: string;
 }
 
 export interface Answer {
@@ -29,14 +30,11 @@ const Answer = (props: AnswerProps) => {
   const clickHandler = props.clickHandler;
   const activeDiscussion = props.activeDiscussion;
   const discussionSetter = props.discussionSetter;
+  const question = props.question;
   const key = props.id;
   const active = props.active;
   const table = answer?.table as string;
   const rotation = active ? " rotate-180" : "";
-
-  const question =
-    (document?.getElementById("searchBar") as HTMLInputElement)?.value || "";
-
   const schema = table.split(".")[1];
   const tableName = table.split(".")[2];
   const database = table.split(".")[0];
@@ -52,7 +50,7 @@ const Answer = (props: AnswerProps) => {
     activeDiscussion
       ? `/api/DiscussButton?tableName=${tableName}&schema=${schema}&database=${database}&table=${JSON.stringify(
           data?.result
-        )}&question=${question}`
+        )}&question=${question || ""}`
       : null,
     answerFetcher,
     {
